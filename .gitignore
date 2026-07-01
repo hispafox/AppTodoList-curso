@@ -1,0 +1,26 @@
+## .NET
+bin/
+obj/
+*.user
+[Bb]uild/
+[Oo]ut/
+
+## Base de datos local (SQLite)
+*.db
+*.db-shm
+*.db-wal
+
+## Entorno
+.vs/
+.vscode/*
+!.vscode/extensions.json
+appsettings.*.local.json
+
+## Frontend (Node)
+node_modules/
+dist/
+*.log
+
+## Sistema
+.DS_Store
+Thumbs.db
