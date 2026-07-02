@@ -4,7 +4,7 @@ Aplicación de lista de tareas para el curso de GitHub Copilot. CRUD construido 
 
 ## Stack
 
-- **Backend**: ASP.NET Core 8 Minimal API o Controllers (según decisión del curso)
+- **Backend**: ASP.NET Core 10 Minimal API o Controllers (según decisión del curso)
 - **Base de datos**: SQLite con Entity Framework Core
 - **Frontend**: Razor Pages o React + Vite (según decisión del curso)
 - **Tests**: xUnit + Moq
