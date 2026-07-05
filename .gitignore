@@ -24,3 +24,5 @@ dist/
 ## Sistema
 .DS_Store
 Thumbs.db
+bin/
+obj/
