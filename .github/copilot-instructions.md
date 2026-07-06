@@ -72,6 +72,7 @@ dotnet ef database update
 | `diseño-analisis` | Crear o regenerar `docs/analisis-diseño.md` |
 | `modelo` | Generar las clases de dominio en `Models/` leyendo la sección 4 del análisis |
 | `controlador` | Generar los controladores en `Controllers/` leyendo la sección 5 del análisis |
+| `dto` | Generar los DTOs de entrada/salida en `Dtos/` y refactorizar los controladores para usarlos |
 
 ## Agentes disponibles
 

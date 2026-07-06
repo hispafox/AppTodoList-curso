@@ -1,4 +1,4 @@
-using AppTodoList.Models;
+using AppTodoList.Dtos;
 using AppTodoList.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,14 +16,14 @@ public class TareasController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<TodoItem>>> ObtenerTodos()
+    public async Task<ActionResult<IEnumerable<TareaDto>>> ObtenerTodos()
     {
         var tareas = await _servicio.ObtenerTodosAsync();
         return Ok(tareas);
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<TodoItem>> ObtenerPorId(int id)
+    public async Task<ActionResult<TareaDto>> ObtenerPorId(int id)
     {
         var tarea = await _servicio.ObtenerPorIdAsync(id);
         if (tarea is null)
@@ -32,18 +32,16 @@ public class TareasController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<TodoItem>> Crear(TodoItem tarea)
+    public async Task<ActionResult<TareaDto>> Crear(CrearTareaDto dto)
     {
-        var creada = await _servicio.CrearAsync(tarea);
+        var creada = await _servicio.CrearAsync(dto);
         return CreatedAtAction(nameof(ObtenerPorId), new { id = creada.Id }, creada);
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<TodoItem>> Actualizar(int id, TodoItem tarea)
+    public async Task<ActionResult<TareaDto>> Actualizar(int id, ActualizarTareaDto dto)
     {
-        if (id != tarea.Id)
-            return BadRequest();
-        var actualizada = await _servicio.ActualizarAsync(tarea);
+        var actualizada = await _servicio.ActualizarAsync(id, dto);
         if (actualizada is null)
             return NotFound();
         return Ok(actualizada);
@@ -59,7 +57,7 @@ public class TareasController : ControllerBase
     }
 
     [HttpPost("{id}/completar")]
-    public async Task<ActionResult<TodoItem>> Completar(int id)
+    public async Task<ActionResult<TareaDto>> Completar(int id)
     {
         var resultado = await _servicio.CompletarAsync(id);
         if (resultado is null)

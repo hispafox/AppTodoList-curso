@@ -1,4 +1,4 @@
-using AppTodoList.Models;
+using AppTodoList.Dtos;
 using AppTodoList.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,14 +16,14 @@ public class PlantillasController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<PlantillaTarea>>> ObtenerTodas()
+    public async Task<ActionResult<IEnumerable<PlantillaDto>>> ObtenerTodas()
     {
         var plantillas = await _servicio.ObtenerTodasAsync();
         return Ok(plantillas);
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<PlantillaTarea>> ObtenerPorId(int id)
+    public async Task<ActionResult<PlantillaDto>> ObtenerPorId(int id)
     {
         var plantilla = await _servicio.ObtenerPorIdAsync(id);
         if (plantilla is null)
@@ -32,18 +32,16 @@ public class PlantillasController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<PlantillaTarea>> Crear(PlantillaTarea plantilla)
+    public async Task<ActionResult<PlantillaDto>> Crear(CrearPlantillaDto dto)
     {
-        var creada = await _servicio.CrearAsync(plantilla);
+        var creada = await _servicio.CrearAsync(dto);
         return CreatedAtAction(nameof(ObtenerPorId), new { id = creada.Id }, creada);
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<PlantillaTarea>> Actualizar(int id, PlantillaTarea plantilla)
+    public async Task<ActionResult<PlantillaDto>> Actualizar(int id, ActualizarPlantillaDto dto)
     {
-        if (id != plantilla.Id)
-            return BadRequest();
-        var actualizada = await _servicio.ActualizarAsync(plantilla);
+        var actualizada = await _servicio.ActualizarAsync(id, dto);
         if (actualizada is null)
             return NotFound();
         return Ok(actualizada);
@@ -59,11 +57,11 @@ public class PlantillasController : ControllerBase
     }
 
     [HttpPost("{id}/instanciar")]
-    public async Task<ActionResult<TodoItem>> Instanciar(int id)
+    public async Task<ActionResult<TareaDto>> Instanciar(int id)
     {
         var tarea = await _servicio.InstanciarAsync(id);
         if (tarea is null)
             return NotFound();
-        return CreatedAtAction("ObtenerPorId", "Tareas", new { id = tarea.Id }, tarea);
+        return CreatedAtAction(nameof(TareasController.ObtenerPorId), "Tareas", new { id = tarea.Id }, tarea);
     }
 }
