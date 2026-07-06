@@ -1,0 +1,104 @@
+@AppTodoList_HostAddress = http://localhost:5104
+
+### ===========================
+### TAREAS  /api/tareas
+### ===========================
+
+### Listar todas las tareas
+GET {{AppTodoList_HostAddress}}/api/tareas
+Accept: application/json
+
+###
+
+### Obtener tarea por ID
+GET {{AppTodoList_HostAddress}}/api/tareas/1
+Accept: application/json
+
+###
+
+### Crear tarea
+POST {{AppTodoList_HostAddress}}/api/tareas
+Content-Type: application/json
+
+{
+  "title": "Nueva tarea de ejemplo",
+  "esRepetitiva": false,
+  "recurrencia": null
+}
+
+###
+
+### Actualizar tarea
+PUT {{AppTodoList_HostAddress}}/api/tareas/1
+Content-Type: application/json
+
+{
+  "id": 1,
+  "title": "Tarea actualizada",
+  "isCompleted": false,
+  "esRepetitiva": false,
+  "recurrencia": null
+}
+
+###
+
+### Eliminar tarea
+DELETE {{AppTodoList_HostAddress}}/api/tareas/1
+
+###
+
+### Completar tarea
+POST {{AppTodoList_HostAddress}}/api/tareas/1/completar
+
+###
+
+### ===========================
+### PLANTILLAS  /api/plantillas
+### ===========================
+
+### Listar todas las plantillas
+GET {{AppTodoList_HostAddress}}/api/plantillas
+Accept: application/json
+
+###
+
+### Obtener plantilla por ID
+GET {{AppTodoList_HostAddress}}/api/plantillas/1
+Accept: application/json
+
+###
+
+### Crear plantilla
+POST {{AppTodoList_HostAddress}}/api/plantillas
+Content-Type: application/json
+
+{
+  "titulo": "Plantilla de ejemplo",
+  "esRepetitiva": false,
+  "recurrencia": null
+}
+
+###
+
+### Actualizar plantilla
+PUT {{AppTodoList_HostAddress}}/api/plantillas/1
+Content-Type: application/json
+
+{
+  "id": 1,
+  "titulo": "Plantilla actualizada",
+  "esRepetitiva": true,
+  "recurrencia": 1
+}
+
+###
+
+### Eliminar plantilla
+DELETE {{AppTodoList_HostAddress}}/api/plantillas/1
+
+###
+
+### Instanciar tarea desde plantilla
+POST {{AppTodoList_HostAddress}}/api/plantillas/1/instanciar
+
+###

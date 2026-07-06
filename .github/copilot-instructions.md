@@ -70,6 +70,8 @@ dotnet ef database update
 |---|---|
 | `commit-message` | Generar el mensaje de commit |
 | `diseño-analisis` | Crear o regenerar `docs/analisis-diseño.md` |
+| `modelo` | Generar las clases de dominio en `Models/` leyendo la sección 4 del análisis |
+| `controlador` | Generar los controladores en `Controllers/` leyendo la sección 5 del análisis |
 
 ## Agentes disponibles
 

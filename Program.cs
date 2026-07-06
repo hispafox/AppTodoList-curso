@@ -1,7 +1,9 @@
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddControllers();
+
 var app = builder.Build();
 
-app.MapGet("/", () => "AppTodoList — checkpoint 3.2 (modelo generado desde el análisis).");
+app.MapControllers();
 
 app.Run();
