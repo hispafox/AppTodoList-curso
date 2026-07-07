@@ -68,7 +68,12 @@ Crear los ficheros dentro de `Dtos/`. Se puede agrupar los tres DTOs de un mismo
 - **Sin referencias a entidades de dominio**: los DTOs no incluyen propiedades de tipo `TodoItem` u otras entidades; solo tipos primitivos o enums.
 - **Sin claves primarias en DTOs de entrada**: `Id` no se incluye en `Crear<Recurso>Dto` ni en `Actualizar<Recurso>Dto` — el `id` viene por ruta.
 - **Campos calculados o de auditoría** (`CreatedAt`, timestamps): no se incluyen en DTOs de entrada; sí en el DTO de respuesta si son relevantes para el cliente.
-- **Sin anotaciones de validación**: la validación de dominio va en la lógica de negocio (`LogicaNegocio/`), no en los DTOs. Solo se pueden usar anotaciones de validación básicas de ASP.NET si el análisis las especifica explícitamente.
+- **Validaciones automáticas en DTOs de entrada**: aplicar **siempre** las siguientes reglas en `Crear<Recurso>Dto` y `Actualizar<Recurso>Dto`, sin necesidad de que el análisis las especifique explícitamente:
+  - Toda propiedad `string` **no nullable** debe llevar `[Required(ErrorMessage = "El {campo} es obligatorio")]` y `[MaxLength(200, ErrorMessage = "El {campo} no puede superar 200 caracteres")]` (ajustar el límite si `HasMaxLength` en Fluent API indica otro valor).
+  - Toda propiedad `string` **nullable** (`string?`) debe llevar solo `[MaxLength(200)]`, sin `[Required]`.
+  - Propiedades `int`, `bool`, `DateTime` no nullable: no llevan `[Required]` (el compilador ya lo garantiza). Añadir `[Range(min, max)]` solo si el análisis especifica rango válido.
+  - Validaciones especializadas según tipo de dato: email → `[EmailAddress]`, regex → `[RegularExpression(@"patrón")]`.
+  - **Excepción**: si el análisis indica explícitamente que un campo no debe validarse, omitir la anotación y documentar por qué.
 
 #### Patrón de ejemplo
 

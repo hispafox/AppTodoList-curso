@@ -249,6 +249,49 @@ Lee `.github/copilot-instructions.md` y verifica el cumplimiento de cada convenc
 
 ---
 
+### 9.5. Análisis de origen: skills utilizados
+
+**Este paso es CRÍTICO cuando el desarrollo partió de un plan.**
+
+#### Buscar planes de implementación
+
+Busca ficheros `docs/plan-*.md` que documenten qué skills se usaron para implementar cada feature:
+
+```bash
+ls docs/plan-*.md 2>/dev/null
+```
+
+Para cada plan encontrado:
+1. Lee el fichero completo
+2. Identifica la sección **"Skills a utilizar"** o **"Pipeline de skills"**
+3. Extrae la lista de skills que se invocaron (por ejemplo: `modelo`, `dto`, `base-de-datos`, `logica-negocio`, `validaciones`, `servicio`, `controlador`)
+4. Identifica qué capas/ficheros generó cada skill según el plan
+
+#### Correlacionar hallazgos con skills
+
+Para cada hallazgo detectado en las secciones anteriores:
+1. Identifica el fichero y la capa donde ocurrió (ej: `Controllers/TareasController.cs`)
+2. Busca en los planes qué skill generó ese fichero
+3. Anota el skill responsable junto al hallazgo
+
+Ejemplo de correlación:
+- **Hallazgo:** Controlador accede directamente a `DbContext` en `TareasController.cs` línea 42
+- **Skill responsable:** `controlador` (según plan-tareas.md)
+- **Problema en el skill:** El skill `controlador` no valida que solo se inyecten servicios `IXxxService`, permitiendo inyectar `AppDbContext`
+
+#### Detectar patrones sistemáticos
+
+Si detectas el **mismo tipo de problema en múltiples ficheros generados por el mismo skill**, eso indica un **defecto sistemático en el skill**:
+
+- ¿Todos los controladores generados por `controlador` tienen lógica de negocio?
+- ¿Todos los servicios generados por `servicio` usan `DateTime.Now` en lugar de `DateTime.UtcNow`?
+- ¿Todos los DTOs generados por `dto` carecen de validaciones `[Required]`?
+- ¿Todos los métodos en LogicaNegocio generados por `logica-negocio` olvidan `AsNoTracking()`?
+
+Esto es **GOLD** para el informe — significa que corrigiendo el skill una vez, se previenen futuros errores automáticamente.
+
+---
+
 ### 10. Generar informe de auditoría
 
 Produce el informe en este formato exacto:
@@ -336,13 +379,145 @@ Produce el informe en este formato exacto:
 
 ---
 
+### ANÁLISIS DE SKILLS (cuando el desarrollo partió de un plan)
+
+**IMPORTANTE:** Esta sección solo aparece si existen planes de implementación (`docs/plan-*.md`) que documenten qué skills se usaron.
+
+Si **no hay planes** o **los planes no especifican skills**, indicar:
+
+> ⚠️ No se encontraron planes de implementación con trazabilidad de skills. No es posible correlacionar hallazgos con skills específicos.
+
+Si **hay planes con skills documentados**, generar esta sección:
+
+---
+
+#### Skills auditados
+
+| Skill | Ficheros generados | Hallazgos asociados |
+|---|---|---|
+| `modelo` | `Models/TodoItem.cs`, `Models/Categoria.cs` | 2 medios |
+| `dto` | `Dtos/TareasDtos.cs` | 1 alto, 3 medios |
+| `controlador` | `Controllers/TareasController.cs` | 1 crítico, 2 altos |
+| ... | ... | ... |
+
+---
+
+#### Defectos sistemáticos detectados en skills
+
+(Solo incluir skills que presentan patrones repetidos de problemas)
+
+##### 🛠️ Skill: `controlador`
+**Problema recurrente:** Permite inyectar `AppDbContext` directamente en constructores de controladores, violando la arquitectura de capas.
+
+**Hallazgos relacionados:**
+- 🔴 `TareasController.cs` línea 15: Inyecta `AppDbContext` en lugar de `ITareaService`
+- 🔴 `CategoriasController.cs` línea 18: Inyecta `AppDbContext` en lugar de `ICategoriaService`
+
+**Causa raíz en el skill:**  
+El skill `controlador` no valida que las dependencias inyectadas sean solo interfaces `IXxxService`. Genera código con inyección de dependencias sin restricción de tipo.
+
+**Mejora propuesta para el skill:**
+```markdown
+## Regla adicional en skill controlador
+
+Antes de generar el constructor del controlador, VERIFICAR que todas las dependencias sean interfaces de servicio (`IXxxService`). RECHAZAR la generación si se intenta inyectar:
+- `AppDbContext`
+- Clases de `LogicaNegocio` (`IXxxLogica`)
+- Clases de `Models`
+- Cualquier clase concreta (salvo `ILogger<T>` o `IMapper`)
+
+Mensaje de error: "El controlador solo puede inyectar servicios (`IXxxService`). Para acceder a datos, crea o usa un servicio existente."
+```
+
+**Impacto de aplicar la mejora:**  
+Previene automáticamente violaciones de arquitectura de capas en futuros controladores generados por este skill.
+
+---
+
+##### 🛠️ Skill: `dto`
+**Problema recurrente:** Los DTOs de entrada generados carecen de validaciones `[Required]` en propiedades obligatorias.
+
+**Hallazgos relacionados:**
+- 🟠 `TareasDtos.cs` línea 8: Propiedad `Title` sin `[Required]`
+- 🟠 `CategoriasDtos.cs` línea 6: Propiedad `Nombre` sin `[Required]`
+
+**Causa raíz en el skill:**  
+El skill `dto` genera propiedades con `= string.Empty` pero no añade la anotación `[Required]` de forma automática.
+
+**Mejora propuesta para el skill:**
+```markdown
+## Regla adicional en skill dto
+
+Para cada propiedad `string` en un DTO de entrada (`CreateXxxDto`, `UpdateXxxDto`):
+1. Si la propiedad NO es nullable (`string?`), añadir automáticamente `[Required]` y `[MaxLength(200)]` (ajustar según contexto).
+2. Si es nullable (`string?`), mantener sin `[Required]` pero añadir `[MaxLength(200)]`.
+
+Para propiedades `int`, `DateTime`, verificar en el modelo de dominio si son obligatorias y añadir `[Required]` si no son nullable.
+```
+
+**Impacto de aplicar la mejora:**  
+Genera DTOs con validaciones básicas desde el inicio, reduciendo deuda técnica y mejorando robustez de la API.
+
+---
+
+[Continuar con otros skills que presenten patrones repetidos...]
+
+---
+
+#### Auditoría de los skills del proyecto
+
+**Alcance:** Se auditaron las definiciones de los skills del proyecto en `.github/skills/`.
+
+**Hallazgos en las definiciones de skills:**
+
+##### 🟡 [MEDIO] — Falta validación de arquitectura en skill `controlador`
+**Fichero:** `.github/skills/controlador/SKILL.md`  
+**Línea:** 42 (sección "Generar código del controlador")  
+**Descripción:** El skill genera constructores inyectando dependencias sin validar que sean solo servicios. No hay check que impida inyectar `AppDbContext` o `IXxxLogica` directamente.  
+**Mejora:** Añadir paso de validación antes de generar el constructor (ver mejora propuesta arriba).
+
+##### 🟡 [MEDIO] — Skill `dto` no garantiza validaciones automáticas
+**Fichero:** `.github/skills/dto/SKILL.md`  
+**Línea:** 35 (sección "Generar DTOs de entrada")  
+**Descripción:** El skill menciona añadir validaciones "cuando sea necesario", pero no define criterio automático claro. Esto deja la decisión al LLM, causando inconsistencia.  
+**Mejora:** Establecer regla determinista: toda propiedad `string` no nullable en DTO de entrada lleva `[Required]` y `[MaxLength]`.
+
+##### 🟡 [MEDIO] — Skill `logica-negocio` no menciona `AsNoTracking()` para consultas de solo lectura
+**Fichero:** `.github/skills/logica-negocio/SKILL.md`  
+**Línea:** 50 (sección "Implementar métodos de acceso a datos")  
+**Descripción:** El skill no instruye explícitamente usar `AsNoTracking()` en queries que no modifican datos, causando overhead de tracking innecesario.  
+**Mejora:** Añadir regla: "Para métodos `ObtenerXxx`, `ListarXxx`, añadir `.AsNoTracking()` después del `DbSet<T>`."
+
+##### 🔵 [BAJO] — Skill `servicio` no menciona mapeo bidireccional completo
+**Fichero:** `.github/skills/servicio/SKILL.md`  
+**Línea:** 60 (sección "Mapeo DTO ↔ Entidad")  
+**Descripción:** El skill menciona mapeo pero no exige verificación de que TODOS los campos del DTO se mapeen a la entidad y viceversa.  
+**Mejora:** Añadir checklist de mapeo completo antes de considerar terminado el servicio.
+
+[Continuar con otros hallazgos en skills...]
+
+---
+
+**Resumen de auditoría de skills:**
+
+| Estado | Cantidad de skills |
+|---|---|
+| ✅ Sin problemas detectados | 8 |
+| ⚠️ Con observaciones menores | 4 |
+| ❌ Con problemas que requieren corrección | 2 |
+
+**Recomendación:** Actualizar los skills con problemas (`controlador`, `dto`) aplicando las mejoras propuestas. Esto reducirá automáticamente la deuda técnica futura en un ~40% según hallazgos correlacionados.
+
+---
+
 ### PRÓXIMOS PASOS RECOMENDADOS
 
 (Ordenados por impacto/urgencia)
 
 1. [Hallazgo crítico o alto más urgente] — [por qué primero]
-2. [Siguiente]
+2. **Actualizar skills defectuosos** — Aplicar mejoras propuestas a `controlador` y `dto` para prevenir futuros problemas automáticamente
 3. [Siguiente]
+4. [Siguiente]
 
 ---
 

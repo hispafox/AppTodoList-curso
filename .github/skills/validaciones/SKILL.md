@@ -68,6 +68,26 @@ if (existente is null)
 
 Verificar que **todos** los métodos que usen un `id` sigan este patrón. Si alguno no lo hace, corregirlo.
 
+#### Validación de claves foráneas (FKs) en recursos relacionados
+
+Cuando se añade un campo FK a una entidad existente (por ejemplo, `CategoriaId` a `TodoItem`), **verificar que la lógica de negocio de la entidad que contiene la FK valide su existencia antes de persistir**. Esto aplica tanto a `CrearAsync` como a `ActualizarAsync`.
+
+**Pasos obligatorios:**
+1. Identificar todas las entidades que referencian al nuevo recurso mediante FK (revisar `Models/` y `AppDbContext`).
+2. Para cada entidad relacionada, abrir su `XxxLogica.cs` y localizar `CrearAsync` y `ActualizarAsync`.
+3. Verificar si ya existe validación de FK para otras relaciones (por ejemplo, `UsuarioAsignadoId`). Si existe, añadir la nueva validación con el mismo patrón:
+
+```csharp
+// En XxxLogica.CrearAsync y ActualizarAsync
+if (entidad.<NuevaFK>Id.HasValue &&
+    !await _contexto.<NuevoRecurso>s.AnyAsync(r => r.Id == entidad.<NuevaFK>Id.Value))
+    throw new ArgumentException($"No existe {nombreRecurso} con Id {entidad.<NuevaFK>Id}.");
+```
+
+4. Si no existe ninguna validación de FK, crear la primera siguiendo el mismo patrón.
+
+**Regla general:** Por cada FK nullable añadida a un modelo, la lógica que crea/actualiza esa entidad debe validar la existencia del recurso referenciado. Esto evita errores de violación de FK en SQLite que se manifiestan como `500 Internal Server Error` en lugar de `400 Bad Request`.
+
 ### Paso 4 — Añadir reglas de negocio específicas del análisis
 
 Revisar la sección 5 del análisis en busca de reglas de negocio adicionales. Ejemplos habituales:

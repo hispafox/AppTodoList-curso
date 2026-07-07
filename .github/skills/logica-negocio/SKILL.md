@@ -92,7 +92,7 @@ public class <Recurso>Logica : I<Recurso>Logica
     }
 
     public async Task<IEnumerable<<Recurso>>> ObtenerTodosAsync()
-        => await _contexto.<Recurso>s.ToListAsync();
+        => await _contexto.<Recurso>s.AsNoTracking().ToListAsync();
 
     public async Task<<Recurso>?> ObtenerPorIdAsync(int id)
         => await _contexto.<Recurso>s.FindAsync(id);
@@ -110,7 +110,10 @@ public class <Recurso>Logica : I<Recurso>Logica
         if (existente is null)
             return null;
 
-        // Actualizar campos según el análisis + aplicar reglas de negocio aquí
+        // CHECKLIST: actualizar TODOS los campos modificables de la entidad.
+        // Excluir: Id, CreatedAt y otros campos de auditoría (solo lectura).
+        // Incluir: todas las propiedades escalares + FKs opcionales (nullable).
+        // Si un campo NO debe actualizarse, documentar aquí por qué.
         await _contexto.SaveChangesAsync();
         return existente;
     }
@@ -134,6 +137,7 @@ public class <Recurso>Logica : I<Recurso>Logica
 - **Inyección de dependencias**: constructor con `AppDbContext`, almacenado en campo `readonly` privado. Nunca `new` directo.
 - **`async/await`** en todos los métodos que accedan a base de datos.
 - **Trabaja con entidades de dominio**: los parámetros y retornos son tipos de `Models/`, nunca DTOs. El mapeo DTO ↔ entidad es responsabilidad del servicio.
+- **`AsNoTracking()` en consultas de solo lectura**: añadir `.AsNoTracking()` inmediatamente después del `DbSet<T>` en **todos** los métodos que solo leen datos (`ObtenerTodosAsync`, `ObtenerPorIdAsync`). Si el método usa `Include`, colocar `.AsNoTracking()` **después** de todos los `.Include()` y antes de `.ToListAsync()` / `.FirstOrDefaultAsync()`. **No** añadirlo en `CrearAsync`, `ActualizarAsync` ni `EliminarAsync` — esos métodos necesitan tracking para persistir cambios.
 - **Aquí van las reglas de negocio**: validaciones de dominio, cálculos, estados de la entidad. Por ejemplo: no se puede completar una tarea ya completada, no se puede instanciar una plantilla inactiva.
 - **Tipos de retorno nullable** (`T?`, `bool`) cuando el recurso puede no existir — el servicio decide cómo manejarlo.
 - **Sin lógica HTTP**: no conoce `ActionResult`, `StatusCode` ni nada de la capa de presentación.
