@@ -76,6 +76,7 @@ dotnet ef database update
 | `servicio` | Generar la capa de orquestación en `Services/` (traduce DTO ↔ entidad y delega en la lógica) |
 | `logica-negocio` | Generar la capa de reglas de dominio y acceso a datos en `LogicaNegocio/` (trabaja con entidades, usa `AppDbContext`) |
 | `base-de-datos` | Crear `AppDbContext` (EF Core + SQLite), la Fluent API, el registro en `Program.cs`, el seeder, y ejecutar las migraciones |
+| `validaciones` | Añadir las validaciones de entrada (DataAnnotations en los DTOs) y las reglas de guarda de dominio en la lógica de negocio |
 
 ## Agentes disponibles
 

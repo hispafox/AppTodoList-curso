@@ -59,6 +59,9 @@ public class TodoLogica : ITodoLogica
         if (tarea is null)
             return null;
 
+        if (tarea.IsCompleted)
+            throw new InvalidOperationException("La tarea ya está completada");
+
         tarea.IsCompleted = true;
 
         TodoItem resultado = tarea;

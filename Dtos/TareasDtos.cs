@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using AppTodoList.Models;
 
 namespace AppTodoList.Dtos;
@@ -5,6 +6,8 @@ namespace AppTodoList.Dtos;
 // DTO de entrada para crear una tarea
 public class CrearTareaDto
 {
+    [Required(ErrorMessage = "El título es obligatorio")]
+    [MaxLength(200, ErrorMessage = "El título no puede superar 200 caracteres")]
     public string Title { get; set; } = string.Empty;
     public bool EsRepetitiva { get; set; } = false;
     public TipoRecurrencia? Recurrencia { get; set; }
@@ -14,6 +17,8 @@ public class CrearTareaDto
 // DTO de entrada para actualizar una tarea
 public class ActualizarTareaDto
 {
+    [Required(ErrorMessage = "El título es obligatorio")]
+    [MaxLength(200, ErrorMessage = "El título no puede superar 200 caracteres")]
     public string Title { get; set; } = string.Empty;
     public bool IsCompleted { get; set; } = false;
     public bool EsRepetitiva { get; set; } = false;
