@@ -88,6 +88,7 @@ dotnet ef database update
 | `Prompt Engineer` | Construir, mejorar u optimizar un prompt antes de pedirle una tarea a GitHub Copilot: detecta los cuatro pilares (Rol, Contexto, Tarea, Formato) y pregunta hasta completarlos. No toca código (`tools: []`). |
 | `planificador-apptodolist` | Analizar una petición y producir un plan de implementación completo en `docs/plan-<slug>.md` (modelo, DTOs, endpoints, lógica, capas afectadas, tests, criterios de aceptación, skills a invocar). Solo lee y escribe en `docs/` (`tools: [read, search, edit]`, sin `execute`). |
 | `desarrollador-apptodolist` | Implementar un plan de `docs/plan-*.md` ejecutando los skills de su sección 10 en orden, y compilar con `dotnet build` al terminar. Único agente constructor con `execute` (`tools: [read, search, edit, execute]`). |
+| `verificador-apptodolist` | Comprobar que una implementación cumple los criterios de aceptación (§9) de un plan de `docs/plan-*.md`: compila, migraciones correctas, capas según el plan. Emite veredicto binario APROBADO/REVISAR. No edita nada (`tools: [read, search, execute]`, sin `edit`). |
 
 ---
 
