@@ -29,10 +29,11 @@ public class TodoService : ITodoService
     {
         var entidad = new TodoItem
         {
-            Title = dto.Title,
-            EsRepetitiva = dto.EsRepetitiva,
-            Recurrencia = dto.Recurrencia,
-            PlantillaId = dto.PlantillaId
+            Title             = dto.Title,
+            EsRepetitiva      = dto.EsRepetitiva,
+            Recurrencia       = dto.Recurrencia,
+            PlantillaId       = dto.PlantillaId,
+            UsuarioAsignadoId = dto.UsuarioAsignadoId
         };
         var creada = await _logica.CrearAsync(entidad);
         return MapearADto(creada);
@@ -42,10 +43,11 @@ public class TodoService : ITodoService
     {
         var entidad = new TodoItem
         {
-            Title = dto.Title,
-            IsCompleted = dto.IsCompleted,
-            EsRepetitiva = dto.EsRepetitiva,
-            Recurrencia = dto.Recurrencia
+            Title             = dto.Title,
+            IsCompleted       = dto.IsCompleted,
+            EsRepetitiva      = dto.EsRepetitiva,
+            Recurrencia       = dto.Recurrencia,
+            UsuarioAsignadoId = dto.UsuarioAsignadoId
         };
         var actualizada = await _logica.ActualizarAsync(id, entidad);
         return actualizada is null ? null : MapearADto(actualizada);
@@ -62,13 +64,15 @@ public class TodoService : ITodoService
 
     private static TareaDto MapearADto(TodoItem entidad) => new()
     {
-        Id = entidad.Id,
-        Title = entidad.Title,
-        IsCompleted = entidad.IsCompleted,
-        CreatedAt = entidad.CreatedAt,
-        EsRepetitiva = entidad.EsRepetitiva,
-        Recurrencia = entidad.Recurrencia,
-        ProximaFecha = entidad.ProximaFecha,
-        PlantillaId = entidad.PlantillaId
+        Id                    = entidad.Id,
+        Title                 = entidad.Title,
+        IsCompleted           = entidad.IsCompleted,
+        CreatedAt             = entidad.CreatedAt,
+        EsRepetitiva          = entidad.EsRepetitiva,
+        Recurrencia           = entidad.Recurrencia,
+        ProximaFecha          = entidad.ProximaFecha,
+        PlantillaId           = entidad.PlantillaId,
+        UsuarioAsignadoId     = entidad.UsuarioAsignadoId,
+        UsuarioAsignadoNombre = entidad.UsuarioAsignado?.Nombre
     };
 }

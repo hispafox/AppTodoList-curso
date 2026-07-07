@@ -11,4 +11,6 @@ public class TodoItem
     public DateTime? ProximaFecha { get; set; }
     public int? PlantillaId { get; set; }
     public PlantillaTarea? Plantilla { get; set; }
+    public int? UsuarioAsignadoId { get; set; }
+    public UsuarioAsignado? UsuarioAsignado { get; set; }
 }

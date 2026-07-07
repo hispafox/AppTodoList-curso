@@ -68,6 +68,7 @@ dotnet ef database update
 
 | Skill | Cuándo usarlo |
 |---|---|
+| `nueva-feature` | **Orquestador principal.** Implementa cualquier feature nueva de principio a fin (entidad nueva, campo nuevo, endpoint nuevo). Ejecuta todos los skills necesarios en orden. |
 | `commit-message` | Generar el mensaje de commit |
 | `diseño-analisis` | Crear o regenerar `docs/analisis-diseño.md` |
 | `modelo` | Generar las clases de dominio en `Models/` leyendo la sección 4 del análisis |

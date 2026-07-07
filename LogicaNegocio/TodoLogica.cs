@@ -14,13 +14,21 @@ public class TodoLogica : ITodoLogica
     }
 
     public async Task<IEnumerable<TodoItem>> ObtenerTodosAsync()
-        => await _contexto.TodoItems.ToListAsync();
+        => await _contexto.TodoItems
+            .Include(t => t.UsuarioAsignado)
+            .ToListAsync();
 
     public async Task<TodoItem?> ObtenerPorIdAsync(int id)
-        => await _contexto.TodoItems.FindAsync(id);
+        => await _contexto.TodoItems
+            .Include(t => t.UsuarioAsignado)
+            .FirstOrDefaultAsync(t => t.Id == id);
 
     public async Task<TodoItem> CrearAsync(TodoItem entidad)
     {
+        if (entidad.UsuarioAsignadoId.HasValue &&
+            !await _contexto.UsuariosAsignados.AnyAsync(u => u.Id == entidad.UsuarioAsignadoId.Value))
+            throw new ArgumentException($"No existe el usuario asignado con Id {entidad.UsuarioAsignadoId}.");
+
         entidad.CreatedAt = DateTime.UtcNow;
         _contexto.TodoItems.Add(entidad);
         await _contexto.SaveChangesAsync();
@@ -33,10 +41,15 @@ public class TodoLogica : ITodoLogica
         if (existente is null)
             return null;
 
+        if (entidad.UsuarioAsignadoId.HasValue &&
+            !await _contexto.UsuariosAsignados.AnyAsync(u => u.Id == entidad.UsuarioAsignadoId.Value))
+            throw new ArgumentException($"No existe el usuario asignado con Id {entidad.UsuarioAsignadoId}.");
+
         existente.Title = entidad.Title;
         existente.IsCompleted = entidad.IsCompleted;
         existente.EsRepetitiva = entidad.EsRepetitiva;
         existente.Recurrencia = entidad.Recurrencia;
+        existente.UsuarioAsignadoId = entidad.UsuarioAsignadoId;
 
         await _contexto.SaveChangesAsync();
         return existente;
@@ -71,13 +84,14 @@ public class TodoLogica : ITodoLogica
             var proximaFecha = CalcularProximaFecha(DateTime.UtcNow, tarea.Recurrencia.Value);
             var nuevaTarea = new TodoItem
             {
-                Title = tarea.Title,
-                IsCompleted = false,
-                CreatedAt = DateTime.UtcNow,
-                EsRepetitiva = true,
-                Recurrencia = tarea.Recurrencia,
-                ProximaFecha = proximaFecha,
-                PlantillaId = tarea.PlantillaId
+                Title              = tarea.Title,
+                IsCompleted        = false,
+                CreatedAt          = DateTime.UtcNow,
+                EsRepetitiva       = true,
+                Recurrencia        = tarea.Recurrencia,
+                ProximaFecha       = proximaFecha,
+                PlantillaId        = tarea.PlantillaId,
+                UsuarioAsignadoId  = tarea.UsuarioAsignadoId
             };
             _contexto.TodoItems.Add(nuevaTarea);
             resultado = nuevaTarea;

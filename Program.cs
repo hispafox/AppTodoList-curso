@@ -13,6 +13,7 @@ builder.Services.AddScoped<IPlantillaLogica, PlantillaLogica>();
 
 builder.Services.AddScoped<ITodoService, TodoService>();
 builder.Services.AddScoped<IPlantillaService, PlantillaService>();
+builder.Services.AddScoped<IUsuarioAsignadoService, UsuarioAsignadoService>();
 
 builder.Services.AddControllers();
 
