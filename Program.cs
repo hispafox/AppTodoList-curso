@@ -10,6 +10,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped<ITodoLogica, TodoLogica>();
 builder.Services.AddScoped<IPlantillaLogica, PlantillaLogica>();
+builder.Services.AddScoped<IUsuarioAsignadoLogica, UsuarioAsignadoLogica>();
 
 builder.Services.AddScoped<ITodoService, TodoService>();
 builder.Services.AddScoped<IPlantillaService, PlantillaService>();

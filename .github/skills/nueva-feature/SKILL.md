@@ -125,8 +125,9 @@ Ejecutar el skill [`servicio`](../servicio/SKILL.md):
 - Si es entidad nueva: crear `I<Entidad>Service.cs` y `<Entidad>Service.cs`.
 - Si son métodos nuevos: añadirlos a la interfaz y la implementación existentes.
 - El servicio mapea DTO → entidad (entrada) y entidad → DTO (salida); delega toda operación a la lógica de negocio.
-- Registrar el nuevo servicio en `Program.cs`:
+- Registrar **tanto la lógica como el servicio** en `Program.cs`:
   ```csharp
+  builder.Services.AddScoped<I<Entidad>Logica, <Entidad>Logica>();
   builder.Services.AddScoped<I<Entidad>Service, <Entidad>Service>();
   ```
 
@@ -151,7 +152,7 @@ dotnet build
 Resolver cualquier error de compilación antes de continuar. Los errores más frecuentes al añadir una feature nueva son:
 
 - Namespace incorrecto en el fichero nuevo.
-- `DbSet` o registro en `Program.cs` olvidado.
+- `DbSet` o registro en `Program.cs` olvidado (tanto `I<Entidad>Logica` como `I<Entidad>Service` deben tener su `AddScoped`).
 - Mapeo incompleto en el servicio (campo nuevo no trasladado de DTO a entidad).
 - Migración no generada después de cambiar `AppDbContext`.
 

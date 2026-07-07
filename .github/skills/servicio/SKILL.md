@@ -166,14 +166,24 @@ public class <Recurso>Service : I<Recurso>Service
 
 ### Paso 5 — Registrar los servicios en `Program.cs`
 
-Abrir `Program.cs` y añadir el registro de cada servicio generado como `Scoped`:
+Abrir `Program.cs` y añadir el registro de **la lógica de negocio y el servicio** de cada recurso generado como `Scoped`.
+**OBLIGATORIO: registrar ambas dependencias — si falta alguna, la app falla al arrancar.**
 
 ```csharp
+// Lógica de negocio (debe preceder al servicio que la consume)
+builder.Services.AddScoped<I<Recurso>Logica, <Recurso>Logica>();
+
+// Servicio
 builder.Services.AddScoped<I<Recurso>Service, <Recurso>Service>();
 ```
 
-Colocar los registros agrupados con los de lógica de negocio, antes de `var app = builder.Build();`.
-Si ya estaba registrado, no duplicar la línea.
+Colocar los registros agrupados con los demás de lógica de negocio y servicios, antes de `var app = builder.Build();`.
+Si alguna línea ya estaba registrada, no duplicarla.
+
+> **Checklist de verificación antes de terminar:**
+> - [ ] Cada `I<Recurso>Logica` tiene su `AddScoped` en `Program.cs`
+> - [ ] Cada `I<Recurso>Service` tiene su `AddScoped` en `Program.cs`
+> - [ ] El orden es: primero la lógica, después el servicio que la consume
 
 ### Paso 6 — Confirmar
 

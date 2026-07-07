@@ -23,7 +23,9 @@ Content-Type: application/json
 {
   "title": "Nueva tarea de ejemplo",
   "esRepetitiva": false,
-  "recurrencia": null
+  "recurrencia": null,
+  "plantillaId": null,
+  "usuarioAsignadoId": null
 }
 
 ###
@@ -37,7 +39,8 @@ Content-Type: application/json
   "title": "Tarea actualizada",
   "isCompleted": false,
   "esRepetitiva": false,
-  "recurrencia": null
+  "recurrencia": null,
+  "usuarioAsignadoId": null
 }
 
 ###
@@ -100,5 +103,48 @@ DELETE {{AppTodoList_HostAddress}}/api/plantillas/1
 
 ### Instanciar tarea desde plantilla
 POST {{AppTodoList_HostAddress}}/api/plantillas/1/instanciar
+
+###
+
+### =======================================
+### USUARIOS ASIGNADOS  /api/usuariosasignados
+### =======================================
+
+### Listar todos los usuarios asignados
+GET {{AppTodoList_HostAddress}}/api/usuariosasignados
+Accept: application/json
+
+###
+
+### Obtener usuario asignado por ID
+GET {{AppTodoList_HostAddress}}/api/usuariosasignados/1
+Accept: application/json
+
+###
+
+### Crear usuario asignado
+POST {{AppTodoList_HostAddress}}/api/usuariosasignados
+Content-Type: application/json
+
+{
+  "nombre": "Pedro García",
+  "email": "pedro@example.com"
+}
+
+###
+
+### Actualizar usuario asignado
+PUT {{AppTodoList_HostAddress}}/api/usuariosasignados/1
+Content-Type: application/json
+
+{
+  "nombre": "Pedro García Actualizado",
+  "email": "pedro.nuevo@example.com"
+}
+
+###
+
+### Eliminar usuario asignado
+DELETE {{AppTodoList_HostAddress}}/api/usuariosasignados/1
 
 ###
