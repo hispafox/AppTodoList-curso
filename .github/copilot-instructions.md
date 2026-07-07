@@ -90,6 +90,7 @@ dotnet ef database update
 | `desarrollador-apptodolist` | Implementar un plan de `docs/plan-*.md` ejecutando los skills de su sección 10 en orden, y compilar con `dotnet build` al terminar. Único agente constructor con `execute` (`tools: [read, search, edit, execute]`). |
 | `verificador-apptodolist` | Comprobar que una implementación cumple los criterios de aceptación (§9) de un plan de `docs/plan-*.md`: compila, migraciones correctas, capas según el plan. Emite veredicto binario APROBADO/REVISAR. No edita nada (`tools: [read, search, execute]`, sin `edit`). |
 | `auditor-calidad` | Auditar toda la aplicación (o una capa) SIN un plan de referencia, en modo abogado del diablo: code smells, deuda técnica, async/await, EF Core, seguridad OWASP. Emite veredicto graduado APROBADO/OBSERVACIONES/RECHAZADO con puntuación en `docs/auditoria-<fecha>.md`. Fuera del ciclo (se invoca a demanda). `edit` es solo para su informe (`tools: [read, search, execute, edit]`). |
+| `orquestador-apptodolist` | Implementar una feature de principio a fin con una sola orden: invoca en cadena a `planificador-apptodolist`, `desarrollador-apptodolist` y `verificador-apptodolist` (bucle de verificación máx. 3 iteraciones), y hace el commit + push a la rama principal solo si el veredicto es APROBADO. No implementa código (`tools: [read, search, edit, execute, agent]`; `agents: [planificador-apptodolist, desarrollador-apptodolist, verificador-apptodolist]`). |
 
 ---
 
