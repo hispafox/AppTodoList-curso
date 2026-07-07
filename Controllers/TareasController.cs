@@ -16,9 +16,9 @@ public class TareasController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<TareaDto>>> ObtenerTodos()
+    public async Task<ActionResult<IEnumerable<TareaDto>>> ObtenerTodos([FromQuery] int? categoriaId)
     {
-        var tareas = await _servicio.ObtenerTodosAsync();
+        var tareas = await _servicio.ObtenerTodosAsync(categoriaId);
         return Ok(tareas);
     }
 

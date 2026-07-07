@@ -10,6 +10,12 @@ Accept: application/json
 
 ###
 
+### Listar tareas por categoría
+GET {{AppTodoList_HostAddress}}/api/tareas?categoriaId=1
+Accept: application/json
+
+###
+
 ### Obtener tarea por ID
 GET {{AppTodoList_HostAddress}}/api/tareas/1
 Accept: application/json
@@ -25,7 +31,8 @@ Content-Type: application/json
   "esRepetitiva": false,
   "recurrencia": null,
   "plantillaId": null,
-  "usuarioAsignadoId": null
+  "usuarioAsignadoId": null,
+  "categoriaId": null
 }
 
 ###
@@ -40,7 +47,8 @@ Content-Type: application/json
   "isCompleted": false,
   "esRepetitiva": false,
   "recurrencia": null,
-  "usuarioAsignadoId": null
+  "usuarioAsignadoId": null,
+  "categoriaId": null
 }
 
 ###
@@ -146,5 +154,48 @@ Content-Type: application/json
 
 ### Eliminar usuario asignado
 DELETE {{AppTodoList_HostAddress}}/api/usuariosasignados/1
+
+###
+
+### ===========================
+### CATEGORÍAS  /api/categorias
+### ===========================
+
+### Listar todas las categorías
+GET {{AppTodoList_HostAddress}}/api/categorias
+Accept: application/json
+
+###
+
+### Obtener categoría por ID
+GET {{AppTodoList_HostAddress}}/api/categorias/1
+Accept: application/json
+
+###
+
+### Crear categoría
+POST {{AppTodoList_HostAddress}}/api/categorias
+Content-Type: application/json
+
+{
+  "nombre": "Trabajo",
+  "color": "#FF5733"
+}
+
+###
+
+### Actualizar categoría
+PUT {{AppTodoList_HostAddress}}/api/categorias/1
+Content-Type: application/json
+
+{
+  "nombre": "Personal",
+  "color": "#33C4FF"
+}
+
+###
+
+### Eliminar categoría
+DELETE {{AppTodoList_HostAddress}}/api/categorias/1
 
 ###

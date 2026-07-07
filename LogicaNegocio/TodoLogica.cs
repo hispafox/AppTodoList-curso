@@ -13,14 +13,23 @@ public class TodoLogica : ITodoLogica
         _contexto = contexto;
     }
 
-    public async Task<IEnumerable<TodoItem>> ObtenerTodosAsync()
-        => await _contexto.TodoItems
+    public async Task<IEnumerable<TodoItem>> ObtenerTodosAsync(int? categoriaId = null)
+    {
+        var query = _contexto.TodoItems
             .Include(t => t.UsuarioAsignado)
-            .ToListAsync();
+            .Include(t => t.Categoria)
+            .AsQueryable();
+
+        if (categoriaId.HasValue)
+            query = query.Where(t => t.CategoriaId == categoriaId.Value);
+
+        return await query.ToListAsync();
+    }
 
     public async Task<TodoItem?> ObtenerPorIdAsync(int id)
         => await _contexto.TodoItems
             .Include(t => t.UsuarioAsignado)
+            .Include(t => t.Categoria)
             .FirstOrDefaultAsync(t => t.Id == id);
 
     public async Task<TodoItem> CrearAsync(TodoItem entidad)
@@ -91,7 +100,8 @@ public class TodoLogica : ITodoLogica
                 Recurrencia        = tarea.Recurrencia,
                 ProximaFecha       = proximaFecha,
                 PlantillaId        = tarea.PlantillaId,
-                UsuarioAsignadoId  = tarea.UsuarioAsignadoId
+                UsuarioAsignadoId  = tarea.UsuarioAsignadoId,
+                CategoriaId        = tarea.CategoriaId
             };
             _contexto.TodoItems.Add(nuevaTarea);
             resultado = nuevaTarea;

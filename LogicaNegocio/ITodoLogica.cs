@@ -4,7 +4,7 @@ namespace AppTodoList.LogicaNegocio;
 
 public interface ITodoLogica
 {
-    Task<IEnumerable<TodoItem>> ObtenerTodosAsync();
+    Task<IEnumerable<TodoItem>> ObtenerTodosAsync(int? categoriaId = null);
     Task<TodoItem?> ObtenerPorIdAsync(int id);
     Task<TodoItem> CrearAsync(TodoItem entidad);
     Task<TodoItem?> ActualizarAsync(int id, TodoItem entidad);

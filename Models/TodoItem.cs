@@ -13,4 +13,6 @@ public class TodoItem
     public PlantillaTarea? Plantilla { get; set; }
     public int? UsuarioAsignadoId { get; set; }
     public UsuarioAsignado? UsuarioAsignado { get; set; }
+    public int? CategoriaId { get; set; }
+    public Categoria? Categoria { get; set; }
 }

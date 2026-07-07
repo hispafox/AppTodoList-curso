@@ -10,6 +10,7 @@ public class AppDbContext : DbContext
     public DbSet<TodoItem> TodoItems => Set<TodoItem>();
     public DbSet<PlantillaTarea> PlantillasTarea => Set<PlantillaTarea>();
     public DbSet<UsuarioAsignado> UsuariosAsignados => Set<UsuarioAsignado>();
+    public DbSet<Categoria> Categorias => Set<Categoria>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -34,6 +35,12 @@ public class AppDbContext : DbContext
                   .HasForeignKey(e => e.UsuarioAsignadoId)
                   .OnDelete(DeleteBehavior.SetNull)
                   .IsRequired(false);
+
+            entity.HasOne(e => e.Categoria)
+                  .WithMany(c => c.Tareas)
+                  .HasForeignKey(e => e.CategoriaId)
+                  .OnDelete(DeleteBehavior.SetNull)
+                  .IsRequired(false);
         });
 
         modelBuilder.Entity<PlantillaTarea>(entity =>
@@ -49,6 +56,13 @@ public class AppDbContext : DbContext
             entity.Property(e => e.Nombre).IsRequired().HasMaxLength(100);
             entity.Property(e => e.Email).IsRequired().HasMaxLength(200);
             entity.HasIndex(e => e.Email).IsUnique();
+        });
+
+        modelBuilder.Entity<Categoria>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Nombre).IsRequired().HasMaxLength(100);
+            entity.Property(e => e.Color).IsRequired().HasMaxLength(7);
         });
     }
 }

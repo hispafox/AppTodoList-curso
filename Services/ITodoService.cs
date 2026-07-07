@@ -4,7 +4,7 @@ namespace AppTodoList.Services;
 
 public interface ITodoService
 {
-    Task<IEnumerable<TareaDto>> ObtenerTodosAsync();
+    Task<IEnumerable<TareaDto>> ObtenerTodosAsync(int? categoriaId = null);
     Task<TareaDto?> ObtenerPorIdAsync(int id);
     Task<TareaDto> CrearAsync(CrearTareaDto dto);
     Task<TareaDto?> ActualizarAsync(int id, ActualizarTareaDto dto);

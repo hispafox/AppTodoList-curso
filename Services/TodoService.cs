@@ -13,9 +13,9 @@ public class TodoService : ITodoService
         _logica = logica;
     }
 
-    public async Task<IEnumerable<TareaDto>> ObtenerTodosAsync()
+    public async Task<IEnumerable<TareaDto>> ObtenerTodosAsync(int? categoriaId = null)
     {
-        var entidades = await _logica.ObtenerTodosAsync();
+        var entidades = await _logica.ObtenerTodosAsync(categoriaId);
         return entidades.Select(MapearADto);
     }
 
@@ -33,7 +33,8 @@ public class TodoService : ITodoService
             EsRepetitiva      = dto.EsRepetitiva,
             Recurrencia       = dto.Recurrencia,
             PlantillaId       = dto.PlantillaId,
-            UsuarioAsignadoId = dto.UsuarioAsignadoId
+            UsuarioAsignadoId = dto.UsuarioAsignadoId,
+            CategoriaId       = dto.CategoriaId
         };
         var creada = await _logica.CrearAsync(entidad);
         return MapearADto(creada);
@@ -47,7 +48,8 @@ public class TodoService : ITodoService
             IsCompleted       = dto.IsCompleted,
             EsRepetitiva      = dto.EsRepetitiva,
             Recurrencia       = dto.Recurrencia,
-            UsuarioAsignadoId = dto.UsuarioAsignadoId
+            UsuarioAsignadoId = dto.UsuarioAsignadoId,
+            CategoriaId       = dto.CategoriaId
         };
         var actualizada = await _logica.ActualizarAsync(id, entidad);
         return actualizada is null ? null : MapearADto(actualizada);
@@ -73,6 +75,8 @@ public class TodoService : ITodoService
         ProximaFecha          = entidad.ProximaFecha,
         PlantillaId           = entidad.PlantillaId,
         UsuarioAsignadoId     = entidad.UsuarioAsignadoId,
-        UsuarioAsignadoNombre = entidad.UsuarioAsignado?.Nombre
+        UsuarioAsignadoNombre = entidad.UsuarioAsignado?.Nombre,
+        CategoriaId           = entidad.CategoriaId,
+        CategoriaNombre       = entidad.Categoria?.Nombre
     };
 }
