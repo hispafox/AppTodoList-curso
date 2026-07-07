@@ -86,6 +86,7 @@ dotnet ef database update
 | Agente | Cuándo usarlo |
 |---|---|
 | `Prompt Engineer` | Construir, mejorar u optimizar un prompt antes de pedirle una tarea a GitHub Copilot: detecta los cuatro pilares (Rol, Contexto, Tarea, Formato) y pregunta hasta completarlos. No toca código (`tools: []`). |
+| `planificador-apptodolist` | Analizar una petición y producir un plan de implementación completo en `docs/plan-<slug>.md` (modelo, DTOs, endpoints, lógica, capas afectadas, tests, criterios de aceptación, skills a invocar). Solo lee y escribe en `docs/` (`tools: [read, search, edit]`, sin `execute`). |
 
 ---
 
