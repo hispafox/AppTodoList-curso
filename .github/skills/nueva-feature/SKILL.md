@@ -143,7 +143,19 @@ Ejecutar el skill [`controlador`](../controlador/SKILL.md):
 
 ---
 
-### Paso 9 — Compilar y verificar
+### Paso 9 — Frontend (`frontend/`)
+
+Ejecutar el skill [`frontend-react`](../frontend-react/SKILL.md) para:
+
+- Actualizar los tipos TypeScript en `frontend/src/types/index.ts` con los campos nuevos del DTO de salida
+- Actualizar (o crear) el servicio fetch en `frontend/src/services/<recurso>Service.ts` si hay endpoints nuevos
+- Actualizar (o crear) la página y los componentes si es una entidad nueva
+
+Si `frontend/` no existe, saltar este paso.
+
+---
+
+### Paso 10 — Compilar y verificar
 
 ```bash
 dotnet build
@@ -158,7 +170,7 @@ Resolver cualquier error de compilación antes de continuar. Los errores más fr
 
 ---
 
-### Paso 10 — Generar el mensaje de commit
+### Paso 11 — Generar el mensaje de commit
 
 Ejecutar el skill [`commit-message`](../commit-message/SKILL.md) con el resumen de todos los ficheros creados o modificados.
 

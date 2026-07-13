@@ -112,6 +112,7 @@ Los skills están en `.github/skills/`. Los más comunes:
 - **validaciones**: Añade validaciones a DTOs y lógica
 - **servicio**: Crea/modifica `Services/`
 - **controlador**: Crea/modifica `Controllers/`
+- **frontend-react**: Crea/modifica `frontend/` (tipos TypeScript, servicios fetch, páginas y componentes)
 - **commit-message**: Genera mensaje de commit
 
 Cada skill tiene su propio SKILL.md con instrucciones detalladas.

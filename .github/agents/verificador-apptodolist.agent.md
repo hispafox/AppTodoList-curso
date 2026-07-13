@@ -276,6 +276,16 @@ Si faltan endpoints en el `.http`, repórtalo como 🟡 Advertencia.
 
 ---
 
+## Verificación del frontend (si el plan lo incluye)
+
+Si el plan indica cambios en el frontend (skill `frontend-react`), verifica:
+
+- **`frontend/src/types/index.ts`**: los campos nuevos del DTO de salida tienen su equivalente TypeScript con el tipo correcto.
+- **`frontend/src/services/`**: existe el servicio fetch del recurso, y sus rutas coinciden con las del controlador.
+- **`frontend/`** compila: `npm run build` termina sin errores.
+
+---
+
 ## Gestión de situaciones especiales
 
 ### El plan no tiene criterios de aceptación explícitos
