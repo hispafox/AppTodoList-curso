@@ -38,8 +38,7 @@ Esta aplicación está diseñada para cualquier persona o equipo que necesite:
 2. Introduce la dirección: `http://localhost:5173` (en desarrollo) o la URL proporcionada por tu administrador
 3. La aplicación cargará la pantalla principal con el listado de tareas
 
-[PLACEHOLDER: Captura de pantalla de la página principal de la aplicación]
-<!-- Mostrar: barra de navegación superior, lista de tareas, botones de acción principales -->
+![Página principal de AppTodoList: barra de navegación superior, lista de tareas y botones de acción](manual/img/01-tareas.png)
 
 ### Navegación básica
 
@@ -79,8 +78,7 @@ Las tareas son el elemento central de la aplicación. Cada tarea tiene un títul
    - Fecha de creación
    - Tipo de recurrencia (si es repetitiva)
 
-[PLACEHOLDER: Captura de pantalla de la lista de tareas]
-<!-- Mostrar: tabla con varias tareas, algunas completadas, con categorías de colores, usuarios asignados -->
+![Lista de tareas: varias tareas, algunas completadas, con sus categorías y usuarios asignados](manual/img/01-tareas.png)
 
 ### 3.2. Crear una tarea nueva
 
@@ -198,7 +196,7 @@ Las categorías te permiten organizar y agrupar tareas por tema, proyecto o prio
    - Nombre
    - Color (representado visualmente)
 
-[PLACEHOLDER: Captura de pantalla de la lista de categorías]
+![Lista de categorías, cada una con su color](manual/img/02-categorias.png)
 <!-- Mostrar: lista con al menos 3 categorías, colores visibles (Trabajo #FF5733, Personal #33C4FF, Urgente #FF3333) -->
 
 ### 4.2. Crear una categoría nueva
@@ -260,7 +258,7 @@ Las plantillas son configuraciones reutilizables que te permiten crear tareas r�
    - Si es repetitiva o no
    - Tipo de recurrencia (diaria, semanal, mensual)
 
-[PLACEHOLDER: Captura de pantalla de la lista de plantillas]
+![Lista de plantillas de tareas recurrentes](manual/img/03-plantillas.png)
 <!-- Mostrar: lista con al menos 2 plantillas, una repetitiva y una no repetitiva -->
 
 ### 5.2. Crear una plantilla nueva
@@ -345,7 +343,7 @@ Los usuarios asignados son las personas que pueden ser responsables de las tarea
    - Nombre completo
    - Dirección de correo electrónico
 
-[PLACEHOLDER: Captura de pantalla de la lista de usuarios]
+![Lista de usuarios asignados](manual/img/04-usuarios.png)
 <!-- Mostrar: lista con al menos 2 usuarios (Ana García, Carlos López) -->
 
 ### 6.2. Crear un usuario nuevo
