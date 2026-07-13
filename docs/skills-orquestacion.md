@@ -4,6 +4,39 @@ Este documento describe el conjunto de skills disponibles en el proyecto, su pro
 
 ---
 
+## 0. Agentes vs. Skills: la arquitectura completa
+
+Los **skills** son las herramientas. Los **agentes** son quienes las usan.
+
+```mermaid
+flowchart TD
+    U[Usuario] --> O[Orquestador]
+    O --> P[Planificador]
+    O --> D[Desarrollador]
+    O --> V[Verificador]
+
+    P --> PLAN[docs/plan-slug.md]
+    D --> PLAN
+    D --> SKILLS[Skills]
+
+    SKILLS --> SK1[diseno-analisis]
+    SKILLS --> SK2[modelo]
+    SKILLS --> SK3[dto]
+    SKILLS --> SK4[base-de-datos]
+    SKILLS --> SK5[logica-negocio]
+    SKILLS --> SK6[validaciones]
+    SKILLS --> SK7[servicio]
+    SKILLS --> SK8[controlador]
+    SKILLS --> SK9[frontend-react]
+
+    D --> CODE[Codigo]
+    V --> CODE
+```
+
+Un skill no decide cuándo actuar: describe **cómo** se hace algo. El agente es quien lee la petición, elige los skills y los ejecuta en orden. Por eso el catálogo de abajo se lee siempre desde el agente que lo va a usar.
+
+---
+
 ## 1. Catálogo de skills
 
 | Skill | Carpeta generada | Responsabilidad |
@@ -16,6 +49,10 @@ Este documento describe el conjunto de skills disponibles en el proyecto, su pro
 | `validaciones` | `Dtos/` + `LogicaNegocio/` | Anotaciones de validación y reglas de dominio |
 | `servicio` | `Services/` | Orquestación: mapeo DTO ↔ entidad, delegación a lógica |
 | `controlador` | `Controllers/` | Capa HTTP: recibe peticiones, llama al servicio, devuelve respuesta |
+| `ui-ux-pro-max` | — | Patrones de diseño y accesibilidad. Se consulta **antes** del frontend; si solo trae la ficha de catálogo, se sigue con los principios básicos y se dice |
+| `frontend-react` | `frontend/` | Tipos TypeScript espejo de los DTOs, servicios fetch, páginas y componentes |
+| `nueva-feature` | _las que toque_ | **Detecta el alcance** de una petición en lenguaje natural y encadena los skills de las capas afectadas, del análisis al commit. No implementa nada por su cuenta: coordina a los demás |
+| `actualizar-documentacion` | `docs/` | Audita la documentación contra el código real y corrige lo que se ha quedado desfasado |
 | `commit-message` | — | Genera el mensaje de commit siguiendo convenciones del proyecto |
 
 ---
