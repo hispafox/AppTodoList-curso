@@ -5,7 +5,7 @@ description: >
   la implementación al desarrollador y la verificación al verificador, y termina con
   el commit y push a la rama principal.
 name: orquestador-apptodolist
-tools: [read, search, edit, execute, agent]
+tools: [read, search, edit, execute, agent, github]
 agents: [planificador-apptodolist, desarrollador-apptodolist, verificador-apptodolist]
 model: <el modelo que elijas>
 argument-hint: "Describe la feature que quieres implementar de principio a fin"
