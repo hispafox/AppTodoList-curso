@@ -145,6 +145,14 @@ Ejecutar el skill [`controlador`](../controlador/SKILL.md):
 
 ### Paso 9 — Frontend (`frontend/`)
 
+#### 9a. Valorar los patrones de diseño
+
+Consultar el skill [`ui-ux-pro-max`](../ui-ux-pro-max/SKILL.md) antes de escribir código React.
+
+> **Nota:** si `ui-ux-pro-max` solo tiene su ficha de catálogo, sin plantillas ni datos, continuar con el paso 9b aplicando los principios básicos (claridad, respuesta visible a cada acción, consistencia y accesibilidad). No inventes que lo has aplicado.
+
+#### 9b. Implementar el frontend
+
 Ejecutar el skill [`frontend-react`](../frontend-react/SKILL.md) para:
 
 - Actualizar los tipos TypeScript en `frontend/src/types/index.ts` con los campos nuevos del DTO de salida

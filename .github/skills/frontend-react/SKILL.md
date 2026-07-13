@@ -17,8 +17,10 @@ argument-hint: 'Recurso o componente a generar (opcional, por defecto: scaffold 
 
 Antes de generar código frontend, verificar que existe:
 
-1. `docs/analisis-diseño.md` — para conocer los endpoints de la API
-2. `Dtos/` — los DTOs del backend son la fuente de verdad de los tipos TypeScript
+1. **`ui-ux-pro-max`** — **VALORAR PRIMERO:** antes de implementar componentes, páginas o flujos de usuario, consulta el skill `ui-ux-pro-max` para aplicar patrones de diseño, heurísticas de usabilidad y accesibilidad.
+   > **Salida honesta:** si al abrirlo compruebas que solo trae la ficha de catálogo (sin plantillas ni datos), **no te bloquees ni finjas que lo has usado**: sigue adelante aplicando los principios básicos de siempre —claridad, respuesta visible a cada acción, consistencia y accesibilidad— y deja constancia de que el skill no aportó nada.
+2. `docs/analisis-diseño.md` — para conocer los endpoints de la API
+3. `Dtos/` — los DTOs del backend son la fuente de verdad de los tipos TypeScript
 
 ## Arquitectura del frontend
 

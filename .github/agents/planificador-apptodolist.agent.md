@@ -49,7 +49,7 @@ Identifica:
 - Qué capas se ven afectadas
 - Qué tests unitarios cubren la lógica nueva
 - Qué skills del catálogo hay que invocar y en qué orden (según `docs/skills-orquestacion.md`)
-- **Si la característica afecta al frontend:** incluir el skill `frontend-react` en la tabla de skills del plan, después de las capas del backend
+- **Si la característica afecta al frontend:** incluir en la tabla de skills del plan `ui-ux-pro-max` ANTES de `frontend-react`, después de las capas del backend
 
 ### 3. Generar el documento de planificación
 
