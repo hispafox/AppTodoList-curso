@@ -17,4 +17,10 @@
     <PackageReference Include="Scalar.AspNetCore" Version="2.16.5" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Tests/**/*.cs" />
+    <Content Remove="Tests/**" />
+    <None Remove="Tests/**" />
+  </ItemGroup>
+
 </Project>
